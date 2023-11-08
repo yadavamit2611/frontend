@@ -81,23 +81,26 @@ export default function Upload() {
   }
 
   return (
-    <div>
+    <div className='flex flex-col items-center justify-center'>
+      <div className='mt-5 p-10 w-3/4 rounded-lg bg-white'>
         <form onSubmit={handleSubmit}>
-          <h1>React File Upload</h1>
-          <input type="file" name="file" onChange={handleChange}/>
-          {file && (
-          <section>
-            File details:
-            <ul>
-              <li>Name: {file.name}</li>
-              <li>Type: {file.type}</li>
-              <li>Size: {file.size} bytes</li>
-            </ul>
-          </section>
-        )}
-          <Button type="submit">Upload</Button>
-        </form>
-        {uploadedFileURL && <img src={uploadedFileURL} alt="Uploaded content"/>}
+            <h1>Upload CV to store</h1>
+            <input type="file" name="file" accept='application/pdf' onChange={handleChange}/>
+            {file && (
+            <section>
+              File details:
+              <ul>
+                <li>Name: {file.name}</li>
+                <li>Type: {file.type}</li>
+                <li>Size: {file.size} bytes</li>
+              </ul>
+              <Button type="submit">Upload</Button>
+            </section>
+          )}
+           
+          </form>
+          {uploadedFileURL && <img src={uploadedFileURL} alt="Uploaded content"/>}
+      </div>
     </div>
   );
 }

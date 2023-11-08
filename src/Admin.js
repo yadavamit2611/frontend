@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { UserCircleIcon } from '@heroicons/react/24/solid'
-import { Button, Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
-import {Link} from "react-router-dom"
-import AddAdmin from "./AddAdmin";
+import { Button, Modal, Box, Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import AdminAdd from "./AdminAdd";
+import AdminEdit from "./AdminEdit";
+
 
 const Admin = () => {
     const [adminList, setAdminList] = useState([]);
-    const [visible, setVisible] = useState(false);
-
+    const [page, setPage] = useState("Admin Table");
     useEffect(() => {
         getAllAdmins();
-    }, []);
+      }, []);
 
     async function getAllAdmins(){
         try {
@@ -24,11 +26,23 @@ const Admin = () => {
         }
     }
 
-    const editAdmin = (person) => {
-      console.info(person);
+    const deleteAdmin = (person) => {
+      console.log(person);
+      return (<></>);
+
+    //   axios.delete('http://localhost:5000/admin/deleteAdmin/1')
+    // .then((response) => element.innerHTML = 'Delete successful');
     }
 
      return (<div className="flex flex-col">
+            <header className="bg-white shadow">
+              <div className="flex flex-row justify-between items-center mx-2">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">{page}</h1>
+              <div className="p-2 flex flex-row justify-end space-x-3">
+                <AdminAdd />
+              </div>
+             </div>
+          </header>
           <div className="mt-1 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-hidden border-b border-gray-400 sm:rounded-lg">
@@ -65,10 +79,6 @@ const Admin = () => {
                   >
                     Location
                   </th>                  
-                  <th scope="col" className="relative px-6 py-3">
-                    {/* <Link to="/newAdmin"><Button color="blue" onClick={() => setVisible(!visible)}>Add New Admin</Button></Link> */}
-                    <Button color="blue" onClick={() => setVisible(!visible)}>Add New Admin</Button>
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -107,8 +117,9 @@ const Admin = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {person?.location}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Button onClick={() => editAdmin(person)}>Edit</Button>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">                       
+                        <AdminEdit {...person}/>
+                        <Button color="red" onClick={() => deleteAdmin(person)}>Delete</Button>
                     </td>
                   </tr>
                 ))}
@@ -116,12 +127,7 @@ const Admin = () => {
             </table>
           </div>
         </div>
-      </div>
-      {
-        visible ? <div className="bg-white p-10 mt-2 rounded-lg">
-            <AddAdmin />
-        </div> : ""
-      }
+        </div>
    </div>)
 };
 export default Admin;
